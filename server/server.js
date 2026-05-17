@@ -1,0 +1,32 @@
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import { connectDB } from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import productRoutes from "./routes/productRoutes.js";
+import categoryRoutes from "./routes/categoryRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import contactRoutes from "./routes/contactRoutes.js";
+import uploadRoutes from "./routes/uploadRoutes.js";
+import couponRoutes from "./routes/couponRoutes.js";
+import { errorHandler, notFound } from "./middleware/error.js";
+
+const app = express();
+app.use(cors({ origin: process.env.CLIENT_URL?.split(",") || "*", credentials: true }));
+app.use(express.json({ limit: "2mb" }));
+
+app.get("/", (req, res) => res.json({ name: "Zayura API", status: "ok" }));
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/contact", contactRoutes);
+app.use("/api/upload", uploadRoutes);
+app.use("/api/coupons", couponRoutes);
+app.use(notFound);
+app.use(errorHandler);
+
+const port = process.env.PORT || 5000;
+connectDB().then(() => app.listen(port, () => console.log(`Server running on ${port}`)));
