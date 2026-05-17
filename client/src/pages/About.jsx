@@ -1,0 +1,3 @@
+export default function About() {
+  return <main className="container-pad py-12"><div className="grid gap-10 lg:grid-cols-2"><div><p className="text-sm font900 uppercase tracking-widest text-mint">About Zayura</p><h1 className="mt-3 text-5xl font900">Safe, effective, affordable cleaning products.</h1><p className="mt-5 text-lg text-slate-600">Zayura is built for clean homes and healthier routines. Our mission is to make reliable cleaning products accessible without making homes feel harsh, chemical-heavy, or complicated.</p></div><img className="rounded-lg shadow-soft" src="https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=1200&q=80" /></div></main>;
+}
