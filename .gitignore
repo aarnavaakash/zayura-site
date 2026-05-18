@@ -1,24 +1,20 @@
 # Dependencies
 node_modules/
-client/node_modules/
-server/node_modules/
+**/node_modules/
 
 # Environment files
 .env
 .env.*
+**/.env
+**/.env.*
 !.env.example
-client/.env
-client/.env.*
-!client/.env.example
-server/.env
-server/.env.*
-!server/.env.example
+!**/.env.example
 
 # Build output
 dist/
 build/
-client/dist/
-client/build/
+**/dist/
+**/build/
 
 # Logs
 logs/
@@ -33,15 +29,26 @@ server/uploads/*
 !server/uploads/.gitkeep
 tmp/
 temp/
+.tmp/
+.temp/
 
 # OS and editor files
 .DS_Store
 Thumbs.db
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # Coverage and caches
 coverage/
 .nyc_output/
 .cache/
 .vite/
+**/.vite/
+
+# Package manager caches
+.npm/
+.pnpm-store/
+yarn.lock
+pnpm-lock.yaml

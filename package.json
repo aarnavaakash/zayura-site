@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "install:all": "npm install --prefix server && npm install --prefix client",
-    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-    "seed": "npm run seed --prefix server"
+    "dev": "node scripts/ensure-env.mjs && concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "seed": "node scripts/ensure-env.mjs && npm run seed --prefix server"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
