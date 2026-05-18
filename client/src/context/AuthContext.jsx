@@ -5,6 +5,12 @@ import { readJson } from "../utils/storage";
 
 const AuthContext = createContext(null);
 
+function requestMessage(error, fallback) {
+  if (error.response?.data?.message) return error.response.data.message;
+  if (error.code === "ERR_NETWORK") return "Cannot reach the server. Check the API URL and backend CORS settings.";
+  return fallback;
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => readJson("zayura_user", null));
   const [loading, setLoading] = useState(false);
@@ -25,7 +31,7 @@ export function AuthProvider({ children }) {
       toast.success("Logged in");
       return data.user;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Login failed");
+      toast.error(requestMessage(error, "Login failed"));
       throw error;
     } finally {
       setLoading(false);
@@ -42,7 +48,7 @@ export function AuthProvider({ children }) {
       toast.success("Account created");
       return data.user;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Signup failed");
+      toast.error(requestMessage(error, "Signup failed"));
       throw error;
     } finally {
       setLoading(false);

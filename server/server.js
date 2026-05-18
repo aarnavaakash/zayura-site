@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./config/db.js";
+import { ensureAdminUser } from "./config/ensureAdmin.js";
 import authRoutes from "./routes/authRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
@@ -13,7 +14,19 @@ import couponRoutes from "./routes/couponRoutes.js";
 import { errorHandler, notFound } from "./middleware/error.js";
 
 const app = express();
-app.use(cors({ origin: process.env.CLIENT_URL?.split(",") || "*", credentials: true }));
+const allowedOrigins = process.env.CLIENT_URL
+  ?.split(",")
+  .map((origin) => origin.trim().replace(/\/+$/, ""))
+  .filter(Boolean);
+
+app.use(cors({
+  origin(origin, callback) {
+    if (!origin || !allowedOrigins?.length || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`Not allowed by CORS: ${origin}`));
+  }
+}));
 app.use(express.json({ limit: "2mb" }));
 
 app.get("/", (req, res) => res.json({ name: "Zayura API", status: "ok" }));
@@ -29,4 +42,6 @@ app.use(notFound);
 app.use(errorHandler);
 
 const port = process.env.PORT || 5000;
-connectDB().then(() => app.listen(port, () => console.log(`Server running on ${port}`)));
+connectDB()
+  .then(ensureAdminUser)
+  .then(() => app.listen(port, () => console.log(`Server running on ${port}`)));

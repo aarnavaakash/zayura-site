@@ -28,14 +28,14 @@ npm run seed
 npm run dev
 ```
 
-Backend runs at `http://localhost:5000`.
+Backend runs at `http://localhost:5001`.
 
 ## Required Environment Variables
 
 Server `.env`:
 
 ```env
-PORT=5000
+PORT=5001
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
 MONGO_URI=your_mongodb_atlas_uri
@@ -53,7 +53,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 Client `.env`:
 
 ```env
-VITE_API_URL=http://localhost:5000/api
+VITE_API_URL=http://localhost:5001/api
 VITE_WHATSAPP_NUMBER=919999999999
 ```
 
@@ -76,7 +76,7 @@ The same command also creates starter categories, sample products, and a `ZAYURA
 2. Create a Render Web Service with root directory `server`.
 3. Set build command: `npm install`.
 4. Set start command: `npm start`.
-5. Add all server environment variables in Render.
+5. Add all server environment variables in Render. Set `CLIENT_URL` to your Vercel frontend URL, for example `https://your-vercel-url.vercel.app`.
 6. Use MongoDB Atlas for `MONGO_URI`.
 7. Use Cloudinary credentials so uploaded admin images persist after deployment.
 
@@ -86,7 +86,7 @@ The same command also creates starter categories, sample products, and a `ZAYURA
 2. Set root directory `client`.
 3. Set build command: `npm run build`.
 4. Set output directory: `dist`.
-5. Add `VITE_API_URL=https://your-render-service.onrender.com/api`.
+5. Add `VITE_API_URL=https://your-render-service.onrender.com/api`. Keep the `/api` suffix because the frontend calls routes like `/products`.
 6. Add `VITE_WHATSAPP_NUMBER`.
 
 ## Main API Routes
