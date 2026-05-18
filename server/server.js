@@ -19,9 +19,23 @@ const allowedOrigins = process.env.CLIENT_URL
   .map((origin) => origin.trim().replace(/\/+$/, ""))
   .filter(Boolean);
 
+function isAllowedOrigin(origin) {
+  if (!origin || !allowedOrigins?.length || allowedOrigins.includes("*")) return true;
+  return allowedOrigins.some((allowedOrigin) => {
+    if (allowedOrigin.includes("*")) {
+      const pattern = new RegExp(`^${allowedOrigin
+        .split("*")
+        .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, "\\$&"))
+        .join(".*")}$`);
+      return pattern.test(origin);
+    }
+    return allowedOrigin === origin;
+  });
+}
+
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || !allowedOrigins?.length || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`Not allowed by CORS: ${origin}`));
